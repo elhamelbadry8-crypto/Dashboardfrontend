@@ -4,7 +4,7 @@
         window.location.href = "../login/login.html"; // تأكد من المسار الصحيح لصفحة اللوجن
     }
 })();
-const API = "http://127.0.0.1:5000/manager";
+const API = "https://elham-33-dashboard.hf.space/manager";
 
 // ===== UI Elements =====
 const sidebar = document.getElementById('sidebar');
