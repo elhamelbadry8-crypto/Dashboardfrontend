@@ -1,0 +1,280 @@
+/* THEME VARIABLES (Matched with the entire project) */
+:root[data-theme="dark"] {
+    --bg-main: #0f172a;
+    --bg-card: rgba(30, 41, 59, 0.75);
+    /* مظهر زجاجي احترافي متناسق مع الخلفية */
+    --border-color: rgba(51, 65, 85, 0.7);
+    --input-bg: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --danger: #ef4444;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] {
+    --bg-main: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    /* مظهر زجاجي أبيض مريح للعين */
+    --border-color: #e2e8f0;
+    --input-bg: #f1f5f9;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #dc2626;
+    --shadow-color: rgba(15, 23, 42, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.4s ease, color 0.4s ease;
+    padding: 20px;
+
+    /* Dark Mode Background overlay setup */
+    background-image: linear-gradient(rgba(15, 23, 42, 0.637), rgba(15, 23, 42, 0.82)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Light Mode Background Filter */
+:root[data-theme="light"] body {
+    background-image: linear-gradient(rgba(241, 245, 249, 0.584), rgba(241, 245, 249, 0.507)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2000');
+}
+
+/* THEME BUTTON */
+.theme-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 14px;
+    font-weight: 500;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.theme-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* LOGIN WRAPPER & CARD */
+.login-wrapper {
+    width: 100%;
+    max-width: 460px;
+    z-index: 10;
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 25px 50px -12px var(--shadow-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* HEADER & LOGO */
+.brand-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="light"] .logo-img {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.brand-header h1 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* BODY & INPUTS */
+.login-body h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-main);
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding-left: 2px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 15px;
+    transition: color 0.2s ease;
+    pointer-events: none;
+}
+
+.input-field {
+    width: 100%;
+    padding: 13px 16px 13px 44px;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.input-field::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* Effects on Focus */
+.input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    background: var(--bg-main);
+}
+
+.input-field:focus+i {
+    color: var(--primary);
+}
+
+/* BUTTONS */
+.btn {
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-block {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* ERROR MESSAGE */
+.error-msg {
+    background: rgba(239, 68, 68, 0.08);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* FOOTER */
+.login-footer {
+    text-align: center;
+    margin-top: 32px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 24px;
+}
+
+.login-footer small {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+}

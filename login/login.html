@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - AKLTECH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <button id="theme-toggle" class="theme-btn" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+
+    <div class="login-wrapper">
+        <div class="login-card card">
+            <div class="brand-header">
+                <img src="logo.jpg" alt="AKLTECH Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/80/2563eb/fff?text=A'">
+                <h1>AKLTECH</h1>
+                <p class="text-muted">Manager Dashboard</p>
+            </div>
+
+            <div class="login-body">
+                <h2>Welcome Back! 👋</h2>
+                <p class="subtitle text-muted">Please enter your credentials to continue.</p>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="username" class="input-field" placeholder="e.g. admin" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" class="input-field" placeholder="••••••••" />
+                    </div>
+                </div>
+
+                <div id="login-error" class="error-msg">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span>Invalid credentials</span>
+                </div>
+
+                <button id="login-btn" class="btn btn-primary btn-block">
+                    Login to Dashboard <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="login-footer">
+                <small class="text-muted">© 2026 AKLTECH POS System. All rights reserved.</small>
+            </div>
+        </div>
+    </div>
+
+    <script src="./login.js"></script>
+</body>
+</html>
