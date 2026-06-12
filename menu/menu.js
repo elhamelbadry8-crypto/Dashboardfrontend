@@ -79,7 +79,7 @@ if(btnLogout){
 }
 
 // ================= MENU MANAGEMENT =================
-const API_URL = "http://127.0.0.1:5000/manager/menu";
+const API_URL = "https://elham-33-dashboard.hf.space/manager/menu";
 
 document.addEventListener("DOMContentLoaded", fetchMenu);
 
