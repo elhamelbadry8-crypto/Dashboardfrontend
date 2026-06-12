@@ -26,59 +26,97 @@ function updateThemeIcon(theme) {
 
 // ===== ERROR HANDLING =====
 const showError = (msg) => {
-    loginError.querySelector('span').textContent = msg;
-    loginError.style.display = "flex";
+    if (loginError) {
+        const span = loginError.querySelector('span');
+        if (span) span.textContent = msg;
+        loginError.style.display = "flex";
+    } else {
+        alert(msg); // حماية إضافية في حال عدم وجود العنصر في الـ HTML
+    }
 };
 
 const hideError = () => {
-    loginError.style.display = "none";
+    if (loginError) loginError.style.display = "none";
 };
 
 // ===== LOGIN LOGIC =====
 const performLogin = async () => {
     hideError();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    if (!usernameInput || !passwordInput) {
+        return showError("فشل العثور على عناصر الإدخال في صفحة HTML");
+    }
 
-    if (!username || !password) return showError("Please fill username and password");
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!username || !password) {
+        return showError("الرجاء إدخال اسم المستخدم وكلمة المرور كاملة");
+    }
 
     // Button Loading State
     const originalBtnHtml = loginBtn.innerHTML;
-    loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
+    loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري تسجيل الدخول...';
     loginBtn.disabled = true;
 
     try {
+        console.log("جاري إرسال الطلب إلى السيرفر...");
         const res = await fetch(API, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify({ username, password })
         });
 
-        const data = await res.json();
+        // طباعة حالة الـ Response في الـ Console لمعرفة الـ HTTP Status Code (مثال: 200, 400, 500)
+        console.log("حالة استجابة السيرفر Status Code:", res.status);
 
-        if (data.success) {
+        if (!res.ok) {
+            // إذا كان هناك خطأ في السيرفر (مثل 500 أو 404) نقرأ نص الخطأ أولاً
+            const errorText = await res.text();
+            throw new Error(`خطأ من السيرفر (${res.status}): ${errorText || res.statusText}`);
+        }
+
+        const data = await res.json();
+        console.log("البيانات المستلمة من السيرفر:", data);
+
+        // التحقق من نجاح عملية تسجيل الدخول
+        if (data && data.success === true) {
             localStorage.setItem("manager", JSON.stringify({
                 staff_id: data.staff_id,
                 role: data.role,
                 name: data.name
             }));
             
-            // Redirect to overview
-            window.location.href = "../overveiw/overveiw.html";
+            console.log("تم حفظ البيانات بنجاح! جاري التوجيه...");
+            
+            // التوجيه إلى صفحة الـ overview (تأكدي من صحة الحروف الإملائية للفولدر لديكِ)
+            window.location.href = "../overview/overview.html"; 
         } else {
-            showError(data.message || "Invalid username or password");
+            // عرض رسالة الخطأ القادمة من الباك إند أو الرسالة الافتراضية
+            showError(data.message || "اسم المستخدم أو كلمة المرور غير صحيحة.");
             loginBtn.innerHTML = originalBtnHtml;
             loginBtn.disabled = false;
         }
     } catch (err) {
-        console.error("Login Error:", err);
-        showError("Server error, please check connection.");
+        console.error("تفاصيل الخطأ بالكامل في الـ Console:", err);
+        
+        // عرض الخطأ الفعلي للمستخدم ليسهل عليكِ معرفة السبب فوراً دون فتح الـ Console
+        showError("حدث خطأ أثناء الاتصال: " + err.message);
+        
         loginBtn.innerHTML = originalBtnHtml;
         loginBtn.disabled = false;
     }
 };
 
-loginBtn?.addEventListener('click', performLogin);
+if (loginBtn) {
+    loginBtn.addEventListener('click', performLogin);
+}
 
 // ===== TRIGGER LOGIN ON ENTER KEY =====
 document.addEventListener('keypress', function (e) {
