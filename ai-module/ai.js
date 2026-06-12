@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:5000/manager";
+const API = "https://elham-33-dashboard.hf.space";
 
 const getEl = (id) => document.getElementById(id);
 
