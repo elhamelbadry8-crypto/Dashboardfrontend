@@ -18,7 +18,6 @@
 
         body {
             background-color: #f3f4f6;
-            /* خلفية رمادية فاتحة مريحة */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -39,7 +38,6 @@
         .logo-placeholder {
             font-size: 3rem;
             color: #2563eb;
-            /* اللون الأزرق البراند */
             margin-bottom: 1rem;
         }
 
@@ -57,16 +55,15 @@
             line-height: 1.5;
         }
 
-        /* الزرار اللي هينقلك لصفحة اللوجن */
-        .btn-go-login {
+        /* تنسيق الزر الجديد للانتقال للتقارير */
+        .btn-go-reports {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background-color: #2563eb;
+            background-color: #10b981; /* تغيير اللون للأخضر المميّز للتقارير والبيانات */
             color: white;
             text-decoration: none;
-            /* عشان نشيل الخط اللي تحت الكلام */
             padding: 0.75rem 1.5rem;
             border-radius: 6px;
             font-weight: 500;
@@ -75,8 +72,8 @@
             width: 100%;
         }
 
-        .btn-go-login:hover {
-            background-color: #1d4ed8;
+        .btn-go-reports:hover {
+            background-color: #059669;
         }
     </style>
 </head>
@@ -85,13 +82,14 @@
 
     <div class="welcome-card">
         <div class="logo-placeholder">
-            <i class="fa-solid fa-laptop-code"></i>
+            <i class="fa-solid fa-chart-pie"></i>
         </div>
         <h1>AKLTECH System</h1>
-        <p>مرحباً بك في نظام إدارة AKLTECH. يرجى الانتقال إلى لوحة تسجيل الدخول للمتابعة.</p>
+        <p>مرحباً بك في نظام إدارة AKLTECH. يمكنك الانتقال مباشرةً لمعاينة صفحة التقارير والتحليلات المتقدمة.</p>
 
-        <a href="reports/reports.html" class="btn-go-login">
-            الانتقال لصفحة تسجيل الدخول <i class="fa-solid fa-right-to-bracket"></i>
+        <!-- تم تعديل المسار هنا ليتوجه مباشرة إلى صفحة التقارير المرفقة -->
+        <a href="reports/reports.html" class="btn-go-reports">
+            عرض التقارير والتحليلات <i class="fa-solid fa-chart-line"></i>
         </a>
     </div>
 
