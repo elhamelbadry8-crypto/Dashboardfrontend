@@ -4,6 +4,7 @@
         window.location.href = "../login/login.html"; 
     }
 })();
+
 const API = "https://elham-33-dashboard.hf.space/manager";
 const getEl = (id) => document.getElementById(id);
 
@@ -110,18 +111,35 @@ if(btnLogout){
 async function loadReports() {
     try {
         const selectedMonth = monthSelector.value;
-        const res = await fetch(`${API}/reports?month=${selectedMonth}`);
+        
+        // تم تزويد الـ Headers لضمان توافق الاتصال الآمن والـ CORS أونلاين
+        const res = await fetch(`${API}/reports?month=${selectedMonth}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if(!res.ok) {
+            throw new Error(`تعذر جلب البيانات من السيرفر. كود الخطأ: ${res.status}`);
+        }
+
         const data = await res.json();
 
-        if(!data.success) return console.error(data.message);
+        if(!data.success) {
+            console.error("خطأ من السيرفر الداخلي:", data.message);
+            return;
+        }
 
         // Update KPIs
-        getEl('kpi-revenue').textContent = `$${data.kpis.revenue.toLocaleString()}`;
-        getEl('kpi-orders').textContent = data.kpis.orders.toLocaleString();
-        getEl('kpi-aov').textContent = `$${data.kpis.aov}`;
-        getEl('kpi-discounts').textContent = `$${data.kpis.discounts.toLocaleString()}`;
+        if(getEl('kpi-revenue')) getEl('kpi-revenue').textContent = `${data.kpis.revenue.toLocaleString()} EGP`;
+        if(getEl('kpi-orders')) getEl('kpi-orders').textContent = data.kpis.orders.toLocaleString();
+        if(getEl('kpi-aov')) getEl('kpi-aov').textContent = `${data.kpis.aov} EGP`;
+        if(getEl('kpi-discounts')) getEl('kpi-discounts').textContent = `${data.kpis.discounts.toLocaleString()} EGP`;
 
         const formatGrowth = (val, el) => {
+            if(!el) return;
             el.textContent = `${val > 0 ? '+' : ''}${val}% vs prev month`;
             el.className = `kpi-delta ${val >= 0 ? 'positive' : 'negative'}`;
         };
@@ -129,25 +147,25 @@ async function loadReports() {
         formatGrowth(data.kpis.orders_growth, getEl('kpi-orders-growth'));
 
         // Update Financial Summary
-        getEl('breakdown-month-badge').textContent = monthSelector.options[monthSelector.selectedIndex].text;
-        getEl('sum-subtotal').textContent = `$${data.finances.subtotal.toLocaleString()}`;
-        getEl('sum-tax').textContent = `$${data.finances.tax.toLocaleString()}`;
-        getEl('sum-delivery').textContent = `$${data.finances.delivery.toLocaleString()}`;
-        getEl('sum-discount').textContent = `-$${data.finances.discount.toLocaleString()}`;
-        getEl('sum-total').textContent = `$${data.finances.total.toLocaleString()}`;
+        if(getEl('breakdown-month-badge')) getEl('breakdown-month-badge').textContent = monthSelector.options[monthSelector.selectedIndex].text;
+        if(getEl('sum-subtotal')) getEl('sum-subtotal').textContent = `${data.finances.subtotal.toLocaleString()} EGP`;
+        if(getEl('sum-tax')) getEl('sum-tax').textContent = `${data.finances.tax.toLocaleString()} EGP`;
+        if(getEl('sum-delivery')) getEl('sum-delivery').textContent = `${data.finances.delivery.toLocaleString()} EGP`;
+        if(getEl('sum-discount')) getEl('sum-discount').textContent = `-${data.finances.discount.toLocaleString()} EGP`;
+        if(getEl('sum-total')) getEl('sum-total').textContent = `${data.finances.total.toLocaleString()} EGP`;
 
         // Update Insights
-        if (data.best_month.month !== "N/A") {
+        if (data.best_month && data.best_month.month !== "N/A") {
             const bDate = new Date(data.best_month.month + "-01");
             const bName = bDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-            getEl('insight-best-month').textContent = `${bName} ($${data.best_month.revenue.toLocaleString()})`;
-            getEl('insight-best-reason').textContent = data.best_month.reason;
+            if(getEl('insight-best-month')) getEl('insight-best-month').textContent = `${bName} (${data.best_month.revenue.toLocaleString()} EGP)`;
+            if(getEl('insight-best-reason')) getEl('insight-best-reason').textContent = data.best_month.reason;
         } else {
-            getEl('insight-best-month').textContent = "Not enough data";
+            if(getEl('insight-best-month')) getEl('insight-best-month').textContent = "Not enough data";
         }
 
         if (data.bottom_dishes && data.bottom_dishes.length > 0) {
-            getEl('insight-menu-warning').textContent = `'${data.bottom_dishes[0].name}'`;
+            if(getEl('insight-menu-warning')) getEl('insight-menu-warning').textContent = `'${data.bottom_dishes[0].name}'`;
         }
 
         // Prepare Chart Colors
@@ -164,54 +182,66 @@ async function loadReports() {
         };
 
         // 1. ALL-TIME YEARLY REVENUE
-        renderChart('allYearsChart', {
-            type: 'bar',
-            data: {
-                labels: data.all_years_comp.map(d => d.year),
-                datasets: [{ label: 'Total Revenue ($)', data: data.all_years_comp.map(d => d.revenue), backgroundColor: '#8b5cf6', borderRadius: 6 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
-        });
+        if(data.all_years_comp) {
+            renderChart('allYearsChart', {
+                type: 'bar',
+                data: {
+                    labels: data.all_years_comp.map(d => d.year),
+                    datasets: [{ label: 'Total Revenue (EGP)', data: data.all_years_comp.map(d => d.revenue), backgroundColor: '#8b5cf6', borderRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
+            });
+        }
 
         // 2. Yearly Comparison Chart
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        renderChart('yearlyCompChart', {
-            type: 'line',
-            data: {
-                labels: monthNames,
-                datasets: [
-                    { label: `Year ${data.target_year} ($)`, data: data.yearly_comparison.current, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
-                    { label: `Year ${data.prev_year} ($)`, data: data.yearly_comparison.previous, borderColor: isLightMode ? '#94a3b8' : '#475569', borderDash: [5,5], borderWidth: 2, fill: false, tension: 0.4 },
-                    { label: `Year ${data.prev2_year} ($)`, data: data.yearly_comparison.previous2, borderColor: isLightMode ? '#cbd5e1' : '#334155', borderDash: [2,2], borderWidth: 2, fill: false, tension: 0.4 }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
-        });
+        if(data.yearly_comparison) {
+            renderChart('yearlyCompChart', {
+                type: 'line',
+                data: {
+                    labels: monthNames,
+                    datasets: [
+                        { label: `Year ${data.target_year} (EGP)`, data: data.yearly_comparison.current, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
+                        { label: `Year ${data.prev_year} (EGP)`, data: data.yearly_comparison.previous, borderColor: isLightMode ? '#94a3b8' : '#475569', borderDash: [5,5], borderWidth: 2, fill: false, tension: 0.4 },
+                        { label: `Year ${data.prev2_year} (EGP)`, data: data.yearly_comparison.previous2, borderColor: isLightMode ? '#cbd5e1' : '#334155', borderDash: [2,2], borderWidth: 2, fill: false, tension: 0.4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
+            });
+        }
 
         // 3. Revenue by Type
-        const typeLabels = Object.keys(data.rev_by_type);
-        const typeValues = Object.values(data.rev_by_type);
-        renderChart('revenueTypeChart', {
-            type: 'doughnut',
-            data: { labels: typeLabels, datasets: [{ data: typeValues, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#cbd5e1'], borderWidth: isLightMode ? 2 : 0, borderColor: isLightMode ? '#fff' : 'transparent' }] },
-            options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
-        });
+        if(data.rev_by_type) {
+            const typeLabels = Object.keys(data.rev_by_type);
+            const typeValues = Object.values(data.rev_by_type);
+            renderChart('revenueTypeChart', {
+                type: 'doughnut',
+                data: { labels: typeLabels, datasets: [{ data: typeValues, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#cbd5e1'], borderWidth: isLightMode ? 2 : 0, borderColor: isLightMode ? '#fff' : 'transparent' }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
+            });
+        }
 
         // 4. Top Dishes
-        renderChart('topDishesChart', {
-            type: 'bar',
-            data: { labels: data.popular_dishes.map(d => d.name.substring(0, 15) + (d.name.length > 15 ? '...' : '')), datasets: [{ label: 'Quantity Sold', data: data.popular_dishes.map(d => d.sold), backgroundColor: '#10b981', borderRadius: 6 }] },
-            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor } }, y: { grid: { display: false } } } }
-        });
+        if(data.popular_dishes) {
+            renderChart('topDishesChart', {
+                type: 'bar',
+                data: { labels: data.popular_dishes.map(d => d.name.substring(0, 15) + (d.name.length > 15 ? '...' : '')), datasets: [{ label: 'Quantity Sold', data: data.popular_dishes.map(d => d.sold), backgroundColor: '#10b981', borderRadius: 6 }] },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor } }, y: { grid: { display: false } } } }
+            });
+        }
 
         // 5. Bottom Dishes
-        renderChart('bottomDishesChart', {
-            type: 'bar',
-            data: { labels: data.bottom_dishes.map(d => d.name.substring(0, 15) + (d.name.length > 15 ? '...' : '')), datasets: [{ label: 'Quantity Sold', data: data.bottom_dishes.map(d => d.sold), backgroundColor: '#ef4444', borderRadius: 6 }] },
-            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { stepSize: 1 } }, y: { grid: { display: false } } } }
-        });
+        if(data.bottom_dishes) {
+            renderChart('bottomDishesChart', {
+                type: 'bar',
+                data: { labels: data.bottom_dishes.map(d => d.name.substring(0, 15) + (d.name.length > 15 ? '...' : '')), datasets: [{ label: 'Quantity Sold', data: data.bottom_dishes.map(d => d.sold), backgroundColor: '#ef4444', borderRadius: 6 }] },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { stepSize: 1 } }, y: { grid: { display: false } } } }
+            });
+        }
 
-    } catch(err) { console.error("Reports Error:", err); }
+    } catch(err) { 
+        console.error("عطل في دالة جلب تقارير الـ JavaScript:", err); 
+    }
 }
 
 // Download PDF
