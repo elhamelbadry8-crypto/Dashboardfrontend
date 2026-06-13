@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --bg-glass: rgba(15, 23, 42, 0.75);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,63 +26,79 @@
         }
 
         body {
-            background-color: #f3f4f6;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: #1f2937;
+            color: var(--text-main);
         }
 
         .welcome-card {
-            background: #ffffff;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
             max-width: 400px;
-            width: 100%;
+            width: 90%;
         }
 
+        /* هذا التنسيق هو المسئول عن تحجيم الصورة داخل الكارت */
         .logo-placeholder {
-            font-size: 3rem;
-            color: #2563eb;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-placeholder img {
+            max-width: 120px; /* يمكنك تغيير العرض من هنا حسب حجم لوجوهك */
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         h1 {
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            color: #111827;
+            color: var(--text-main);
         }
 
         p {
-            color: #4b5563;
+            color: var(--text-muted);
             font-size: 0.95rem;
             margin-bottom: 2rem;
             line-height: 1.5;
         }
 
-        /* تنسيق الزر الجديد للانتقال للتقارير */
-        .btn-go-reports {
+        .btn-go-login {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background-color: #10b981; /* تغيير اللون للأخضر المميّز للتقارير والبيانات */
+            background-color: var(--primary);
             color: white;
             text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
             font-size: 1rem;
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
             width: 100%;
+            border: none;
+            cursor: pointer;
         }
 
-        .btn-go-reports:hover {
-            background-color: #059669;
+        .btn-go-login:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
     </style>
 </head>
@@ -82,14 +107,14 @@
 
     <div class="welcome-card">
         <div class="logo-placeholder">
-            <i class="fa-solid fa-chart-pie"></i>
+            <img src="ai-module/logo.jpg" alt="AKLTECH Logo">
         </div>
-        <h1>AKLTECH System</h1>
-        <p>مرحباً بك في نظام إدارة AKLTECH. يمكنك الانتقال مباشرةً لمعاينة صفحة التقارير والتحليلات المتقدمة.</p>
 
-        <!-- تم تعديل المسار هنا ليتوجه مباشرة إلى صفحة التقارير المرفقة -->
-        <a href="reports/reports.html" class="btn-go-reports">
-            عرض التقارير والتحليلات <i class="fa-solid fa-chart-line"></i>
+        <h1>Manager Dashboard</h1>
+        <p>Welcome to the AKLTECH Management System. Please proceed to the login page to continue.</p>
+
+        <a href="login/login.html" class="btn-go-login">
+            Go to Login <i class="fa-solid fa-right-to-bracket"></i>
         </a>
     </div>
 
