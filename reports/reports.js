@@ -2,6 +2,7 @@
     const manager = localStorage.getItem("manager");
     if (!manager) {
         window.location.href = "../login/login.html"; 
+        
     }
 })();
 const API = "https://elham-33-dashboard.hf.space/manager";
