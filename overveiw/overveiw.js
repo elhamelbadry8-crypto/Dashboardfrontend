@@ -16,7 +16,7 @@ const btnLogout = document.getElementById('btn-logout');
 const themeToggle = document.getElementById('theme-toggle');
 
 // ===== LIGHT / DARK MODE TOGGLE =====
-const currentTheme = localStorage.getItem('theme') || 'dark';
+const currentTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', currentTheme);
 updateThemeIcon(currentTheme);
 
