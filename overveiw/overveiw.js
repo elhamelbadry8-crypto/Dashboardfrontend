@@ -16,7 +16,7 @@ const btnLogout = document.getElementById('btn-logout');
 const themeToggle = document.getElementById('theme-toggle');
 
 // ===== LIGHT / DARK MODE TOGGLE =====
-const currentTheme = localStorage.getItem('theme') || 'light';
+const currentTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', currentTheme);
 updateThemeIcon(currentTheme);
 
@@ -121,7 +121,7 @@ async function loadMainOverview(){
         }
 
         document.getElementById('kpi-orders').textContent = data.total_orders || 0;
-        document.getElementById('kpi-revenue').textContent = `$${(data.total_sales || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        document.getElementById('kpi-revenue').textContent = `${(data.total_sales || 0).toLocaleString(undefined, {minimumFractionDigits: 2})} EGP`;
         document.getElementById('kpi-reservations').textContent = data.active_reservations || 0;
         document.getElementById('kpi-feedback').textContent = `${data.total_feedback || 0} (${data.avg_rating || 0}⭐)`;
 
@@ -181,7 +181,7 @@ async function loadMainOverview(){
             data:{
                 labels:(data.weekly_revenue||[]).map(i=>i.day||''),
                 datasets:[{
-                    label:'Revenue ($)', 
+                    label:'Revenue (EGP)', 
                     data:(data.weekly_revenue||[]).map(i=>i.revenue), 
                     borderColor:'#10b981', 
                     backgroundColor: revGradient,
@@ -293,7 +293,7 @@ function openResetModal() {
     let select = document.getElementById("cashierSelect");
     select.innerHTML = "<option>Loading...</option>";
 
-    fetch('https://elham-33-dashboard.hf.space/manager/cashiers')
+    fetch('http://127.0.0.1:5000/manager/cashiers')
         .then(res => {
             if (!res.ok) throw new Error("Server error " + res.status);
             return res.json();
@@ -354,7 +354,7 @@ function submitReset() {
         return;
     }
 
-    fetch(`https://elham-33-dashboard.hf.space/manager/reset-password/${staff_id}`, {
+    fetch(`http://127.0.0.1:5000/manager/reset-password/${staff_id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
