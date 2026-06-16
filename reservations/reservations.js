@@ -5,7 +5,7 @@
     }
 })();
 // التعديل الجديد: الإشارة للسيرفر الأونلاين وتقطيع الرابط لتفادي حظر GitHub
-const API_URL = "https://elham-33-dashboard." + "hf.space/reservations";
+const API = "https://elham-33-dashboard.hf.space/manager";
 const getEl = (id) => document.getElementById(id);
 
 let globalReservations = []; 
