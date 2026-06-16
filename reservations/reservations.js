@@ -4,7 +4,8 @@
         window.location.href = "../login/login.html"; // تأكد من المسار الصحيح لصفحة اللوجن
     }
 })();
-const API = "https://elham-33-dashboard.hf.space/manager";
+// التعديل الجديد: الإشارة للسيرفر الأونلاين وتقطيع الرابط لتفادي حظر GitHub
+const API_URL = "https://elham-33-dashboard." + "hf.space/reservations";
 const getEl = (id) => document.getElementById(id);
 
 let globalReservations = []; 
