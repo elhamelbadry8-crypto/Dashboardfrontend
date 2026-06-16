@@ -4,9 +4,7 @@
         window.location.href = "../login/login.html"; // تأكد من المسار الصحيح لصفحة اللوجن
     }
 })();
-
-// التعديل الجديد: الإشارة للسيرفر الأونلاين وتقطيع الرابط لتفادي حظر GitHub
-const API = "https://elham-33-dashboard." + "hf.space/manager";
+const API = "https://elham-33-dashboard.hf.space/manager";
 const getEl = (id) => document.getElementById(id);
 
 let globalReservations = []; 
@@ -268,6 +266,7 @@ const applySearchFilter = () => {
     document.querySelectorAll('.order-group').forEach(group => {
         const mainRow = group.querySelector('.main-row');
         if (!mainRow) return;
+        // Search textContent includes main row + expanded details (so it searches email/phone automatically)
         const text = group.textContent.toLowerCase();
         group.style.display = text.includes(s) ? '' : 'none';
     });
