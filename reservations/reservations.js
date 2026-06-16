@@ -160,14 +160,24 @@ async function loadReservations() {
         if(specDate) url += `&date=${specDate}`;
 
         const res = await fetch(url);
-        globalReservations = await res.json();
+        const data = await res.json();
         
+        // --- التعديل هنا: فحص إذا كان الـ API أرجع خطأ ---
+        if (data.success === false) {
+            console.error("API Error:", data.message);
+            getEl('reservations-table').insertAdjacentHTML('beforeend', `<tbody class="no-data"><tr><td colspan="7" style="text-align: center; padding: 30px; color: red;">Error: ${data.message}</td></tr></tbody>`);
+            return;
+        }
+
+        globalReservations = data;
         renderTable(globalReservations);
         
         if(tablesData.length === 0) await loadTables();
         else renderTablesMap();
 
-    } catch(err) { console.error("Reservation Load Error:", err); }
+    } catch(err) { 
+        console.error("Reservation Load Error:", err); 
+    }
 }
 
 function renderTable(data) {
