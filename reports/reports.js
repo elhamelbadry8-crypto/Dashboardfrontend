@@ -2,7 +2,6 @@
     const manager = localStorage.getItem("manager");
     if (!manager) {
         window.location.href = "../login/login.html"; 
-        
     }
 })();
 const API = "https://elham-33-dashboard.hf.space/manager";
@@ -117,10 +116,10 @@ async function loadReports() {
         if(!data.success) return console.error(data.message);
 
         // Update KPIs
-        getEl('kpi-revenue').textContent = `$${data.kpis.revenue.toLocaleString()}`;
+        getEl('kpi-revenue').textContent = `${data.kpis.revenue.toLocaleString()} EGP`;
         getEl('kpi-orders').textContent = data.kpis.orders.toLocaleString();
-        getEl('kpi-aov').textContent = `$${data.kpis.aov}`;
-        getEl('kpi-discounts').textContent = `$${data.kpis.discounts.toLocaleString()}`;
+        getEl('kpi-aov').textContent = `${data.kpis.aov} EGP`;
+        getEl('kpi-discounts').textContent = `${data.kpis.discounts.toLocaleString()} EGP`;
 
         const formatGrowth = (val, el) => {
             el.textContent = `${val > 0 ? '+' : ''}${val}% vs prev month`;
@@ -131,17 +130,17 @@ async function loadReports() {
 
         // Update Financial Summary
         getEl('breakdown-month-badge').textContent = monthSelector.options[monthSelector.selectedIndex].text;
-        getEl('sum-subtotal').textContent = `$${data.finances.subtotal.toLocaleString()}`;
-        getEl('sum-tax').textContent = `$${data.finances.tax.toLocaleString()}`;
-        getEl('sum-delivery').textContent = `$${data.finances.delivery.toLocaleString()}`;
-        getEl('sum-discount').textContent = `-$${data.finances.discount.toLocaleString()}`;
-        getEl('sum-total').textContent = `$${data.finances.total.toLocaleString()}`;
+        getEl('sum-subtotal').textContent = `${data.finances.subtotal.toLocaleString()} EGP`;
+        getEl('sum-tax').textContent = `${data.finances.tax.toLocaleString()} EGP`;
+        getEl('sum-delivery').textContent = `${data.finances.delivery.toLocaleString()} EGP`;
+        getEl('sum-discount').textContent = `-${data.finances.discount.toLocaleString()} EGP`;
+        getEl('sum-total').textContent = `${data.finances.total.toLocaleString()} EGP`;
 
         // Update Insights
         if (data.best_month.month !== "N/A") {
             const bDate = new Date(data.best_month.month + "-01");
             const bName = bDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-            getEl('insight-best-month').textContent = `${bName} ($${data.best_month.revenue.toLocaleString()})`;
+            getEl('insight-best-month').textContent = `${bName} (${data.best_month.revenue.toLocaleString()} EGP)`;
             getEl('insight-best-reason').textContent = data.best_month.reason;
         } else {
             getEl('insight-best-month').textContent = "Not enough data";
@@ -169,7 +168,7 @@ async function loadReports() {
             type: 'bar',
             data: {
                 labels: data.all_years_comp.map(d => d.year),
-                datasets: [{ label: 'Total Revenue ($)', data: data.all_years_comp.map(d => d.revenue), backgroundColor: '#8b5cf6', borderRadius: 6 }]
+                datasets: [{ label: 'Total Revenue (EGP)', data: data.all_years_comp.map(d => d.revenue), backgroundColor: '#8b5cf6', borderRadius: 6 }]
             },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
         });
@@ -181,9 +180,9 @@ async function loadReports() {
             data: {
                 labels: monthNames,
                 datasets: [
-                    { label: `Year ${data.target_year} ($)`, data: data.yearly_comparison.current, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
-                    { label: `Year ${data.prev_year} ($)`, data: data.yearly_comparison.previous, borderColor: isLightMode ? '#94a3b8' : '#475569', borderDash: [5,5], borderWidth: 2, fill: false, tension: 0.4 },
-                    { label: `Year ${data.prev2_year} ($)`, data: data.yearly_comparison.previous2, borderColor: isLightMode ? '#cbd5e1' : '#334155', borderDash: [2,2], borderWidth: 2, fill: false, tension: 0.4 }
+                    { label: `Year ${data.target_year} (EGP)`, data: data.yearly_comparison.current, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
+                    { label: `Year ${data.prev_year} (EGP)`, data: data.yearly_comparison.previous, borderColor: isLightMode ? '#94a3b8' : '#475569', borderDash: [5,5], borderWidth: 2, fill: false, tension: 0.4 },
+                    { label: `Year ${data.prev2_year} (EGP)`, data: data.yearly_comparison.previous2, borderColor: isLightMode ? '#cbd5e1' : '#334155', borderDash: [2,2], borderWidth: 2, fill: false, tension: 0.4 }
                 ]
             },
             options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } } }
