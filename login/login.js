@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API = "https://elham-33-dashboard." + "hf.space/login"; 
+    const API = "https://elham-33-dashboard.hf.space/login"; 
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('password');
     const loginError = document.getElementById('login-error');
