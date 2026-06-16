@@ -1,9 +1,11 @@
-const API = "https://elham-33-dashboard.hf.space/login";
-const loginError = document.getElementById('login-error');
-const loginBtn = document.getElementById('login-btn');
-const themeToggle = document.getElementById('theme-toggle');
+document.addEventListener('DOMContentLoaded', () => {
+    const API = "https://elham-33-dashboard." + "hf.space/login"; 
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    const loginError = document.getElementById('login-error');
+    const loginBtn = document.getElementById('login-btn');
 
-// أزرار الثيم
+    // أزرار الثيم
     const themeBtn = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
     const themeBtnCurtain = document.getElementById('theme-toggle-curtain');
