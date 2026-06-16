@@ -84,9 +84,9 @@ async function fetchAIForecasts() {
         const result = await res.json();
 
         if (result.success) {
-            getEl('kpi-week-forecast').innerText = `$${result.next_7_days.toLocaleString()}`;
-            getEl('kpi-month-forecast').innerText = `$${result.next_30_days.toLocaleString()}`;
-            getEl('kpi-year-forecast').innerText = `$${result.next_year.toLocaleString()}`;
+            getEl('kpi-week-forecast').innerText = `${result.next_7_days.toLocaleString()} EGP`;
+            getEl('kpi-month-forecast').innerText = `${result.next_30_days.toLocaleString()} EGP`;
+            getEl('kpi-year-forecast').innerText = `${result.next_year.toLocaleString()} EGP`;
             getEl('greeting-text').innerHTML = `Model Accuracy: ${result.accuracy}% | Data-driven future insights`;
 
             currentChartData = result.charts;
@@ -120,7 +120,7 @@ function renderCharts(chartsData) {
             { name: 'AI Forecast', data: chartsData.timeline.map(d => d.predicted) }
         ],
         xaxis: { categories: chartsData.timeline.map(d => d.date) },
-        yaxis: { labels: { formatter: (val) => val ? "$" + val.toLocaleString() : "$0" } },
+        yaxis: { labels: { formatter: (val) => val ? val.toLocaleString() + " EGP" : "0 EGP" } },
         colors: ['#64748b', '#2563eb'],
         stroke: { 
             curve: 'smooth', 
